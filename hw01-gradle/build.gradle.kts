@@ -19,7 +19,7 @@ tasks.shadowJar {
     archiveVersion.set("0.1")
     archiveClassifier.set("")
     manifest {
-        attributes ["Main-Class"] = "org.example.HelloOtus"
+        attributes ["Main-Class"] = "de.dudchenko.HelloOtus"
     }
 }
 
