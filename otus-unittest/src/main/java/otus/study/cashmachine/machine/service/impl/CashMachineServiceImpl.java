@@ -1,25 +1,25 @@
 package otus.study.cashmachine.machine.service.impl;
 
-import otus.study.cashmachine.bank.service.AccountService;
-import otus.study.cashmachine.bank.service.CardService;
+import otus.study.cashmachine.bank.service.IAccountService;
+import otus.study.cashmachine.bank.service.ICardService;
 import otus.study.cashmachine.machine.data.CashMachine;
-import otus.study.cashmachine.machine.service.CashMachineService;
-import otus.study.cashmachine.machine.service.MoneyBoxService;
+import otus.study.cashmachine.machine.service.ICashMachineService;
+import otus.study.cashmachine.machine.service.IMoneyBoxService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CashMachineServiceImpl implements CashMachineService {
+public class CashMachineServiceImpl implements ICashMachineService {
 
-    private CardService cardService;
+    private ICardService cardService;
 
-    private AccountService accountService;
+    private IAccountService accountService;
 
-    private MoneyBoxService moneyBoxService;
+    private IMoneyBoxService moneyBoxService;
 
-    public CashMachineServiceImpl(final CardService cardService, final AccountService accountService, final MoneyBoxService moneyBoxService) {
+    public CashMachineServiceImpl(final ICardService cardService, final IAccountService accountService, final IMoneyBoxService moneyBoxService) {
         this.cardService = cardService;
         this.accountService = accountService;
         this.moneyBoxService = moneyBoxService;

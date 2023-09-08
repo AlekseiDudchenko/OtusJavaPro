@@ -4,20 +4,20 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Account {
-    public Account(final long id, final BigDecimal amount) {
-        this.amount = amount;
+    private BigDecimal balance;
+    private long id;
+
+    public Account(final long id, final BigDecimal balance) {
+        this.balance = balance;
         this.id = id;
     }
 
-    private BigDecimal amount;
-    private long id;
-
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setAmount(final BigDecimal amount) {
-        this.amount = amount;
+    public void setBalance(final BigDecimal amount) {
+        this.balance = amount;
     }
 
     public long getId() {
@@ -37,11 +37,11 @@ public class Account {
             return false;
         }
         final Account account = (Account) o;
-        return id == account.id && amount.compareTo(account.amount) == 0;
+        return id == account.id && balance.compareTo(account.balance) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(amount, id);
+        return Objects.hash(balance, id);
     }
 }

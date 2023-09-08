@@ -2,11 +2,11 @@ package otus.study.cashmachine.bank.service.impl;
 
 import otus.study.cashmachine.bank.dao.AccountDao;
 import otus.study.cashmachine.bank.data.Account;
-import otus.study.cashmachine.bank.service.AccountService;
+import otus.study.cashmachine.bank.service.IAccountService;
 
 import java.math.BigDecimal;
 
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements IAccountService {
     AccountDao accountDao;
 
     public AccountServiceImpl(final AccountDao accountDao) {
@@ -27,23 +27,23 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public BigDecimal getMoney(Long id, BigDecimal amount) {
         Account account = accountDao.getAccount(id);
-        if (account.getAmount().subtract(amount).doubleValue() < 0) {
+        if (account.getBalance().subtract(amount).doubleValue() < 0) {
             throw new IllegalArgumentException("Not enough money");
         }
-        account.setAmount(account.getAmount().subtract(amount));
-        return account.getAmount();
+        account.setBalance(account.getBalance().subtract(amount));
+        return account.getBalance();
     }
 
     @Override
     public BigDecimal putMoney(Long id, BigDecimal amount) {
         Account account = accountDao.getAccount(id);
-        account.setAmount(account.getAmount().add(amount));
-        return account.getAmount();
+        account.setBalance(account.getBalance().add(amount));
+        return account.getBalance();
     }
 
     @Override
     public BigDecimal checkBalance(Long id) {
         Account account = accountDao.getAccount(id);
-        return account.getAmount();
+        return account.getBalance();
     }
 }

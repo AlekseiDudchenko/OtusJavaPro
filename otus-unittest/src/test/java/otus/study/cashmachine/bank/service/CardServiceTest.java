@@ -14,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class CardServiceTest {
-    AccountService accountService;
+    IAccountService accountService;
 
     CardsDao cardsDao;
 
-    CardService cardService;
+    ICardService cardService;
 
     @BeforeEach
     void init() {
         cardsDao = mock(CardsDao.class);
-        accountService = mock(AccountService.class);
+        accountService = mock(IAccountService.class);
         cardService = new CardServiceImpl(accountService, cardsDao);
     }
 

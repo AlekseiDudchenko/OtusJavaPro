@@ -2,8 +2,8 @@ package otus.study.cashmachine.bank.service.impl;
 
 import otus.study.cashmachine.bank.dao.CardsDao;
 import otus.study.cashmachine.bank.data.Card;
-import otus.study.cashmachine.bank.service.AccountService;
-import otus.study.cashmachine.bank.service.CardService;
+import otus.study.cashmachine.bank.service.IAccountService;
+import otus.study.cashmachine.bank.service.ICardService;
 
 import java.math.BigDecimal;
 import java.security.MessageDigest;
@@ -11,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 
 
-public class CardServiceImpl implements CardService {
-    AccountService accountService;
+public class CardServiceImpl implements ICardService {
+    IAccountService accountService;
 
     CardsDao cardsDao;
 
-    public CardServiceImpl(final AccountService accountService, final CardsDao cardsDao) {
+    public CardServiceImpl(final IAccountService accountService, final CardsDao cardsDao) {
         this.accountService = accountService;
         this.cardsDao = cardsDao;
     }

@@ -1,14 +1,14 @@
 package otus.study.cashmachine.machine.service.impl;
 
 import otus.study.cashmachine.machine.data.MoneyBox;
-import otus.study.cashmachine.machine.service.MoneyBoxService;
+import otus.study.cashmachine.machine.service.IMoneyBoxService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class MoneyBoxServiceImpl implements MoneyBoxService {
+public class MoneyBoxServiceImpl implements IMoneyBoxService {
 
 
     @Override

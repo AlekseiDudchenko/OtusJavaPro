@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import otus.study.cashmachine.bank.dao.CardsDao;
-import otus.study.cashmachine.bank.service.AccountService;
+import otus.study.cashmachine.bank.service.IAccountService;
 import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,10 +30,10 @@ class CashMachineServiceTest {
     private CardsDao cardsDao;
 
     @Mock
-    private AccountService accountService;
+    private IAccountService accountService;
 
     @Mock
-    private MoneyBoxService moneyBoxService;
+    private IMoneyBoxService moneyBoxService;
 
     private CashMachineServiceImpl cashMachineService;
 
@@ -41,35 +41,41 @@ class CashMachineServiceTest {
 
     @BeforeEach
     void init() {
+        MockitoAnnotations.openMocks(this);
         cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
     }
 
     @Test
-    void getMoney() {
-// @TODO create get money test using spy as mock
-// Arrange
-        CashMachine machine = mock(CashMachine.class);
-        MoneyBox moneyBox = mock(MoneyBox.class);
-        when(machine.getMoneyBox()).thenReturn(moneyBox);
+    void testGetMoney() {
+        String cardNum = "123456";
+        String pin = "1234";
+        BigDecimal amount = new BigDecimal(100);
 
-        String cardNum = "12345";
-        String pin = "6789";
-        BigDecimal amount = new BigDecimal("100");
-
-        when(cardService.getMoney(cardNum, pin, amount)).thenReturn(amount);
-        when(moneyBoxService.getMoney(moneyBox, amount.intValue())).thenReturn(Arrays.asList(50, 50));
+        doReturn(new BigDecimal(100)).when(cardService).getMoney(eq(cardNum), eq(pin), eq(amount));
+        when(moneyBoxService.getMoney(any(), anyInt())).thenReturn(Arrays.asList(20, 20, 20, 20, 20));
 
         // Act
-        List<Integer> result = cashMachineService.getMoney(machine, cardNum, pin, amount);
+        List<Integer> result = cashMachineService.getMoney(cashMachine, cardNum, pin, amount);
 
-        // Assert
-        verify(cardService).getMoney(cardNum, pin, amount);
-        verify(moneyBoxService).getMoney(moneyBox, amount.intValue());
-        assertEquals(Arrays.asList(50, 50), result);
+        verify(cardService).getMoney(eq(cardNum), eq(pin), eq(amount));
+        verify(moneyBoxService).getMoney(any(), eq(amount.intValue()));
+        assertEquals(Arrays.asList(20, 20, 20, 20, 20), result);
+    }
 
-//        getMoney(CashMachine machine, String cardNum, String pin, BigDecimal amount)
-        cashMachineService.getMoney(cashMachine, "1111", "1111", BigDecimal.valueOf(1000));
+    @Test
+    void testGetMoneyException() {
+        // Arrange
+        String cardNum = "123456";
+        String pin = "1234";
+        BigDecimal amount = new BigDecimal(100);
 
+        doThrow(new IllegalArgumentException("No card found")).when(cardService).getMoney(cardNum, pin, amount);
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> cashMachineService.getMoney(cashMachine, cardNum, pin, amount));
+
+        verify(moneyBoxService, never()).getMoney(any(), anyInt());
+        verify(cardService).putMoney(cardNum, pin, amount);
     }
 
     @Test
@@ -83,11 +89,53 @@ class CashMachineServiceTest {
 
     @Test
     void changePin() {
-// @TODO create change pin test using spy as implementation and ArgumentCaptor and thenReturn
+        String cardNum = "1111";
+        String oldPin = "0000";
+        String newPin = "2222";
+
+        doReturn(true).when(cardService).cnangePin(anyString(), anyString(), anyString());
+        ArgumentCaptor<String> cardNumCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> oldPinCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> newPinCaptor = ArgumentCaptor.forClass(String.class);
+
+        // Act
+        assertTrue(cashMachineService.changePin(cardNum, oldPin, newPin));
+
+        verify(cardService).cnangePin(cardNumCaptor.capture(), oldPinCaptor.capture(), newPinCaptor.capture());
+        assertEquals(cardNum, cardNumCaptor.getValue());
+        assertEquals(oldPin, oldPinCaptor.getValue());
+        assertEquals(newPin, newPinCaptor.getValue());
     }
 
     @Test
     void changePinWithAnswer() {
-// @TODO create change pin test using spy as implementation and mock an thenAnswer
+        // Arrange
+        String cardNum = "12345";
+        String oldPin = "1111";
+        String newPin = "2222";
+
+
+        // Use thenAnswer to define custom behavior for the spy
+        doAnswer(invocation -> {
+            String oldPinArg = invocation.getArgument(1);
+            String newPinArg = invocation.getArgument(2);
+
+            return oldPinArg.equals("1111") && newPinArg.equals("2222");
+        }).when(cardService).cnangePin(eq(cardNum), anyString(), anyString());
+
+
+        // Act
+        assertTrue(cardService.cnangePin(cardNum, oldPin, newPin));
+
+        // Assert
+        // Use ArgumentCaptor to capture the arguments and verify them, if necessary.
+        ArgumentCaptor<String> cardNumCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> oldPinCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> newPinCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(cardService).cnangePin(cardNumCaptor.capture(), oldPinCaptor.capture(), newPinCaptor.capture());
+        assertEquals(cardNum, cardNumCaptor.getValue());
+        assertEquals(oldPin, oldPinCaptor.getValue());
+        assertEquals(newPin, newPinCaptor.getValue());
     }
 }

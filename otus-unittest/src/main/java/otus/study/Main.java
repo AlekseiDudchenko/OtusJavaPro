@@ -2,14 +2,14 @@ package otus.study;
 
 import otus.study.cashmachine.bank.dao.AccountDao;
 import otus.study.cashmachine.bank.dao.CardsDao;
-import otus.study.cashmachine.bank.service.AccountService;
-import otus.study.cashmachine.bank.service.CardService;
+import otus.study.cashmachine.bank.service.IAccountService;
+import otus.study.cashmachine.bank.service.ICardService;
 import otus.study.cashmachine.bank.service.impl.AccountServiceImpl;
 import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
-import otus.study.cashmachine.machine.service.CashMachineService;
-import otus.study.cashmachine.machine.service.MoneyBoxService;
+import otus.study.cashmachine.machine.service.ICashMachineService;
+import otus.study.cashmachine.machine.service.IMoneyBoxService;
 import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
 import otus.study.cashmachine.machine.service.impl.MoneyBoxServiceImpl;
 
@@ -21,11 +21,11 @@ import java.util.List;
 public class Main {
     static AccountDao accountDao = new AccountDao();
 
-    static AccountService accountService;
+    static IAccountService accountService;
     static CardsDao cardsDao;
-    static CardService cardService;
-    static MoneyBoxService moneyBoxService;
-    static CashMachineService cashMachineService;
+    static ICardService cardService;
+    static IMoneyBoxService moneyBoxService;
+    static ICashMachineService cashMachineService;
 
 
     static {

@@ -19,6 +19,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testImplementation("org.mockito:mockito-core:5.5.0")
     implementation("org.mockito:mockito-junit-jupiter:5.5.0")
+    implementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
 }
 
 tasks.test {

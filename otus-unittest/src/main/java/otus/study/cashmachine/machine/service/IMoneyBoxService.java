@@ -5,7 +5,7 @@ import otus.study.cashmachine.machine.data.MoneyBox;
 import java.util.List;
 
 
-public interface MoneyBoxService {
+public interface IMoneyBoxService {
 
     int checkSum(MoneyBox moneyBox);
 

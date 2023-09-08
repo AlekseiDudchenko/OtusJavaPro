@@ -4,7 +4,7 @@ import otus.study.cashmachine.bank.data.Account;
 
 import java.math.BigDecimal;
 
-public interface AccountService {
+public interface IAccountService {
     Account createAccount(BigDecimal amount);
 
     Account getAccount(Long id);

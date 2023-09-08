@@ -5,7 +5,7 @@ import otus.study.cashmachine.bank.data.Card;
 import java.math.BigDecimal;
 
 
-public interface CardService {
+public interface ICardService {
     Card createCard(final String number, final Long accountId, final String pinCode);
 
     boolean cnangePin(String number, String oldPin, String newPin);
