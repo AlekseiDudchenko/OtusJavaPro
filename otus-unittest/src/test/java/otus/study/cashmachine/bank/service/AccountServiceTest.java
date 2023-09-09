@@ -4,7 +4,9 @@ package otus.study.cashmachine.bank.service;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import otus.study.cashmachine.bank.dao.AccountDao;
 import otus.study.cashmachine.bank.data.Account;
 import otus.study.cashmachine.bank.service.impl.AccountServiceImpl;
@@ -14,19 +16,14 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
 
     @Spy
     AccountDao accountDao;
 
+    @InjectMocks
     AccountServiceImpl accountServiceImpl;
-
-    @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
-        accountServiceImpl = new AccountServiceImpl(accountDao);
-    }
 
     @AfterEach
     void tearDown() {
