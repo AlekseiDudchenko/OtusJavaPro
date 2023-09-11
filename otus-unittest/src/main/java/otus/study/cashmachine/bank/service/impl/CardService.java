@@ -11,12 +11,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 
 
-public class CardServiceImpl implements ICardService {
+public class CardService implements ICardService {
     IAccountService accountService;
 
     CardsDao cardsDao;
 
-    public CardServiceImpl(final IAccountService accountService, final CardsDao cardsDao) {
+    public CardService(final IAccountService accountService, final CardsDao cardsDao) {
         this.accountService = accountService;
         this.cardsDao = cardsDao;
     }

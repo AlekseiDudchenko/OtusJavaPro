@@ -6,7 +6,7 @@ import org.mockito.ArgumentCaptor;
 import otus.study.cashmachine.TestUtil;
 import otus.study.cashmachine.bank.dao.CardsDao;
 import otus.study.cashmachine.bank.data.Card;
-import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
+import otus.study.cashmachine.bank.service.impl.CardService;
 
 import java.math.BigDecimal;
 
@@ -24,7 +24,7 @@ public class CardServiceTest {
     void init() {
         cardsDao = mock(CardsDao.class);
         accountService = mock(IAccountService.class);
-        cardService = new CardServiceImpl(accountService, cardsDao);
+        cardService = new CardService(accountService, cardsDao);
     }
 
     @Test

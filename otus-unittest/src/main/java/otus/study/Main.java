@@ -5,7 +5,7 @@ import otus.study.cashmachine.bank.dao.CardsDao;
 import otus.study.cashmachine.bank.service.IAccountService;
 import otus.study.cashmachine.bank.service.ICardService;
 import otus.study.cashmachine.bank.service.impl.AccountService;
-import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
+import otus.study.cashmachine.bank.service.impl.CardService;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
 import otus.study.cashmachine.machine.service.ICashMachineService;
@@ -31,7 +31,7 @@ public class Main {
     static {
         accountService = new AccountService(accountDao);
         cardsDao = new CardsDao();
-        cardService = new CardServiceImpl(accountService, cardsDao);
+        cardService = new CardService(accountService, cardsDao);
         moneyBoxService = new MoneyBoxServiceImpl();
         cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
     }

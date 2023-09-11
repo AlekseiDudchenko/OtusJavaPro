@@ -7,7 +7,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import otus.study.cashmachine.bank.dao.CardsDao;
 import otus.study.cashmachine.bank.service.IAccountService;
-import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
+import otus.study.cashmachine.bank.service.impl.CardService;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
 import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
@@ -24,7 +24,7 @@ class CashMachineServiceTest {
 
     @Spy
     @InjectMocks
-    private CardServiceImpl cardService;
+    private CardService cardService;
 
     @Mock
     private CardsDao cardsDao;
