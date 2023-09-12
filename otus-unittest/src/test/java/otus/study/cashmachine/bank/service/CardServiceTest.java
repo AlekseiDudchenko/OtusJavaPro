@@ -14,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class CardServiceTest {
+
+    private final static String NO_CARD_EXCEPTION_MESSAGE = "No card found";
+    private final static String PIN_EXCEPTION_MESSAGE = "Pin code is incorrect";
     IAccountService accountService;
 
     CardsDao cardsDao;
@@ -40,8 +43,8 @@ public class CardServiceTest {
     }
 
     @Test
-    void checkBalance() {
-        Card card = new Card(1L, "1234", 1L, TestUtil.getHash("0000"));
+    void testGetBalance() {
+        Card card = new Card(1L, "1234", 1L, "0000");
         when(cardsDao.getCardByNumber(anyString())).thenReturn(card);
         when(accountService.checkBalance(1L)).thenReturn(new BigDecimal(1000));
 
@@ -50,12 +53,20 @@ public class CardServiceTest {
     }
 
     @Test
+    void testGetBalanceException() {
+        when(cardsDao.getCardByNumber(anyString())).thenReturn(null);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> cardService.getBalance("1111", "0000"));
+        assertEquals(NO_CARD_EXCEPTION_MESSAGE, ex.getMessage());
+    }
+
+    @Test
     void getMoney() {
         ArgumentCaptor<BigDecimal> amountCaptor = ArgumentCaptor.forClass(BigDecimal.class);
         ArgumentCaptor<Long> idCaptor = ArgumentCaptor.forClass(Long.class);
 
         when(cardsDao.getCardByNumber("1111"))
-                .thenReturn(new Card(1L, "1111", 100L, TestUtil.getHash("0000")));
+                .thenReturn(new Card(1L, "1111", 100L, "0000"));
 
         when(accountService.getMoney(idCaptor.capture(), amountCaptor.capture()))
                 .thenReturn(BigDecimal.TEN);
@@ -68,7 +79,53 @@ public class CardServiceTest {
     }
 
     @Test
-    void putMoney() {
+    void getMoneyException() {
+        when(cardsDao.getCardByNumber(anyString())).thenReturn(null);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> cardService.getMoney("1111", "0000", new BigDecimal(10)));
+        assertEquals(NO_CARD_EXCEPTION_MESSAGE, ex.getMessage());
+    }
+
+    @Test
+    void testPutMoneyNoCardException() {
+        String cardNum = "1111";
+        String pin = "0000";
+        BigDecimal sum = new BigDecimal(5000);
+        when(cardsDao.getCardByNumber(cardNum)).thenReturn(null);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                                                () -> cardService.putMoney(cardNum, pin, sum));
+        assertEquals(NO_CARD_EXCEPTION_MESSAGE, ex.getMessage());
+    }
+
+    @Test
+    void testPutMoneyPinException() {
+        long cardId = 1L;
+        long accId = 2L;
+        String cardNum = "1111";
+        String pin = "0000";
+        BigDecimal sum = new BigDecimal(5000);
+        Card card = new Card(cardId, cardNum, accId, pin);
+        when(cardsDao.getCardByNumber(cardNum)).thenReturn(card);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> cardService.putMoney(cardNum, "wrongPin", sum));
+        assertEquals(PIN_EXCEPTION_MESSAGE, ex.getMessage());
+    }
+
+    @Test
+    void testPutMoney() {
+        long cardId = 1L;
+        long accId = 2L;
+        String cardNum = "1111";
+        String pin = "0000";
+        BigDecimal sum = new BigDecimal(5000);
+        BigDecimal newAmount = new BigDecimal(6000);
+        Card card = new Card(cardId, cardNum, accId, pin);
+        when(cardsDao.getCardByNumber(cardNum)).thenReturn(card);
+        when(accountService.putMoney(accId, sum)).thenReturn(newAmount);
+        BigDecimal result = cardService.putMoney(cardNum, pin, sum);
+        verify(cardsDao).getCardByNumber(cardNum);
+        verify(accountService).putMoney(card.getAccountId(), sum);
+        assertEquals(newAmount, result);
     }
 
     @Test
@@ -79,6 +136,44 @@ public class CardServiceTest {
         Exception thrown = assertThrows(IllegalArgumentException.class, () -> {
             cardService.getBalance("1234", "0012");
         });
-        assertEquals(thrown.getMessage(), "Pincode is incorrect");
+        assertEquals(PIN_EXCEPTION_MESSAGE, thrown.getMessage());
+    }
+
+    @Test
+    void testChangePinException() {
+        String cardNumber = "1111";
+        String oldPin = "0000";
+        String newPin = "0001";
+        when(cardsDao.getCardByNumber(anyString())).thenReturn(null);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> cardService.cnangePin(cardNumber, oldPin, newPin));
+        assertEquals(NO_CARD_EXCEPTION_MESSAGE, ex.getMessage());
+    }
+
+    @Test
+    void testChangePin() {
+        long cardId = 1L;
+        long accId = 2L;
+        String cardNumber = "1111";
+        String oldPin = "0000";
+        String newPin = "0001";
+        Card card = new Card(cardId, cardNumber, accId, oldPin);
+        when(cardsDao.getCardByNumber(cardNumber)).thenReturn(card);
+        assertTrue(cardService.cnangePin(cardNumber, oldPin, newPin));
+        verify(cardsDao).saveCard(card);
+        assertEquals(newPin, card.getPinCode());
+    }
+
+    @Test
+    void testChangePinWrongPin() {
+        long cardId = 1L;
+        long accId = 2L;
+        String cardNumber = "1111";
+        String oldPin = "0000";
+        String newPin = "0001";
+        Card card = new Card(cardId, cardNumber, accId, oldPin);
+        when(cardsDao.getCardByNumber(cardNumber)).thenReturn(card);
+        assertFalse(cardService.cnangePin(cardNumber, "wrongPin", newPin));
+        assertEquals(oldPin, card.getPinCode());
     }
 }

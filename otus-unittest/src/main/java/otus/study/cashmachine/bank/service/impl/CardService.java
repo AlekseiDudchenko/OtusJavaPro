@@ -36,7 +36,7 @@ public class CardService implements ICardService {
 
         try {
             checkPin(card, oldPin);
-            card.setPinCode(getHash(newPin));
+            card.setPinCode(newPin);
             cardsDao.saveCard(card);
             return true;
         } catch (Exception e) {
@@ -79,8 +79,8 @@ public class CardService implements ICardService {
     }
 
     private void checkPin(Card card, String pin) {
-        if (!getHash(pin).equals(card.getPinCode())) {
-            throw new IllegalArgumentException("Pincode is incorrect");
+        if (!(pin).equals(card.getPinCode())) {
+            throw new IllegalArgumentException("Pin code is incorrect");
         }
     }
 
