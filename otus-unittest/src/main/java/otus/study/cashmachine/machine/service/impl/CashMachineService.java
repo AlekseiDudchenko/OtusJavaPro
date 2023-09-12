@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CashMachineServiceImpl implements ICashMachineService {
+public class CashMachineService implements ICashMachineService {
 
     private ICardService cardService;
 
@@ -19,7 +19,7 @@ public class CashMachineServiceImpl implements ICashMachineService {
 
     private IMoneyBoxService moneyBoxService;
 
-    public CashMachineServiceImpl(final ICardService cardService, final IAccountService accountService, final IMoneyBoxService moneyBoxService) {
+    public CashMachineService(final ICardService cardService, final IAccountService accountService, final IMoneyBoxService moneyBoxService) {
         this.cardService = cardService;
         this.accountService = accountService;
         this.moneyBoxService = moneyBoxService;

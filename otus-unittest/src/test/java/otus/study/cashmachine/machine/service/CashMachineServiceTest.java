@@ -10,7 +10,7 @@ import otus.study.cashmachine.bank.service.IAccountService;
 import otus.study.cashmachine.bank.service.impl.CardService;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
-import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
+import otus.study.cashmachine.machine.service.impl.CashMachineService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -35,14 +35,14 @@ class CashMachineServiceTest {
     @Mock
     private IMoneyBoxService moneyBoxService;
 
-    private CashMachineServiceImpl cashMachineService;
+    private CashMachineService cashMachineService;
 
     private CashMachine cashMachine = new CashMachine(new MoneyBox());
 
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
-        cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
+        cashMachineService = new CashMachineService(cardService, accountService, moneyBoxService);
     }
 
     @Test

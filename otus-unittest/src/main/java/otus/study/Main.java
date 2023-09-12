@@ -10,8 +10,8 @@ import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
 import otus.study.cashmachine.machine.service.ICashMachineService;
 import otus.study.cashmachine.machine.service.IMoneyBoxService;
-import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
-import otus.study.cashmachine.machine.service.impl.MoneyBoxServiceImpl;
+import otus.study.cashmachine.machine.service.impl.CashMachineService;
+import otus.study.cashmachine.machine.service.impl.MoneyBoxService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -32,8 +32,8 @@ public class Main {
         accountService = new AccountService(accountDao);
         cardsDao = new CardsDao();
         cardService = new CardService(accountService, cardsDao);
-        moneyBoxService = new MoneyBoxServiceImpl();
-        cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
+        moneyBoxService = new MoneyBoxService();
+        cashMachineService = new CashMachineService(cardService, accountService, moneyBoxService);
     }
 
     public static void main(String[] args) {
