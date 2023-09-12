@@ -45,7 +45,13 @@ public class CashMachineService implements ICashMachineService {
             arrangedNotes.add(0);
         }
 
-        moneyBoxService.putMoney(machine.getMoneyBox(), arrangedNotes.get(3), arrangedNotes.get(2), arrangedNotes.get(1), arrangedNotes.get(0));
+        moneyBoxService.putMoney(
+                machine.getMoneyBox(),
+                arrangedNotes.get(3),
+                arrangedNotes.get(2),
+                arrangedNotes.get(1),
+                arrangedNotes.get(0));
+
         return cardService.putMoney(cardNum, pin, new BigDecimal(
                 arrangedNotes.get(3) * 100 +
                     arrangedNotes.get(2) * 500 +

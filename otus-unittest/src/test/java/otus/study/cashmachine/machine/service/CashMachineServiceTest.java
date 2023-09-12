@@ -41,7 +41,6 @@ class CashMachineServiceTest {
 
     @BeforeEach
     void init() {
-        MockitoAnnotations.openMocks(this);
         cashMachineService = new CashMachineService(cardService, accountService, moneyBoxService);
     }
 
@@ -79,7 +78,19 @@ class CashMachineServiceTest {
     }
 
     @Test
-    void putMoney() {
+    public void testPutMoney() {
+        List<Integer> notes = Arrays.asList(1, 2, 3);
+        String cardNum = "12345";
+        String pin = "1111";
+        BigDecimal oldBalance = new BigDecimal("1000");
+        BigDecimal newBalance = new BigDecimal("9000");
+        doReturn(oldBalance).when(cardService).getBalance(anyString(), anyString());
+        doReturn(newBalance).when(cardService).putMoney(anyString(), anyString(), any(BigDecimal.class));
+        BigDecimal result = cashMachineService.putMoney(cashMachine, cardNum, pin, notes);
+        verify(cardService).getBalance(cardNum, pin);
+        verify(cardService).putMoney(eq(cardNum), eq(pin), any(BigDecimal.class));
+        verify(moneyBoxService).putMoney(any(MoneyBox.class), eq(0), eq(3), eq(2), eq(1));
+        assertEquals(newBalance, result);
     }
 
     @Test
