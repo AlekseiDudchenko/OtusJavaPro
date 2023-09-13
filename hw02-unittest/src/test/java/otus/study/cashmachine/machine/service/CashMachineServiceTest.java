@@ -7,10 +7,10 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import otus.study.cashmachine.bank.dao.CardsDao;
 import otus.study.cashmachine.bank.service.IAccountService;
-import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
+import otus.study.cashmachine.bank.service.impl.CardService;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
-import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
+import otus.study.cashmachine.machine.service.impl.CashMachineService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ class CashMachineServiceTest {
 
     @Spy
     @InjectMocks
-    private CardServiceImpl cardService;
+    private CardService cardService;
 
     @Mock
     private CardsDao cardsDao;
@@ -35,14 +35,13 @@ class CashMachineServiceTest {
     @Mock
     private IMoneyBoxService moneyBoxService;
 
-    private CashMachineServiceImpl cashMachineService;
+    private CashMachineService cashMachineService;
 
     private CashMachine cashMachine = new CashMachine(new MoneyBox());
 
     @BeforeEach
     void init() {
-        MockitoAnnotations.openMocks(this);
-        cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
+        cashMachineService = new CashMachineService(cardService, accountService, moneyBoxService);
     }
 
     @Test
@@ -79,7 +78,19 @@ class CashMachineServiceTest {
     }
 
     @Test
-    void putMoney() {
+    public void testPutMoney() {
+        List<Integer> notes = Arrays.asList(1, 2, 3);
+        String cardNum = "12345";
+        String pin = "1111";
+        BigDecimal oldBalance = new BigDecimal("1000");
+        BigDecimal newBalance = new BigDecimal("9000");
+        doReturn(oldBalance).when(cardService).getBalance(anyString(), anyString());
+        doReturn(newBalance).when(cardService).putMoney(anyString(), anyString(), any(BigDecimal.class));
+        BigDecimal result = cashMachineService.putMoney(cashMachine, cardNum, pin, notes);
+        verify(cardService).getBalance(cardNum, pin);
+        verify(cardService).putMoney(eq(cardNum), eq(pin), any(BigDecimal.class));
+        verify(moneyBoxService).putMoney(any(MoneyBox.class), eq(0), eq(3), eq(2), eq(1));
+        assertEquals(newBalance, result);
     }
 
     @Test

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MoneyBoxServiceImpl implements IMoneyBoxService {
+public class MoneyBoxService implements IMoneyBoxService {
 
 
     @Override
