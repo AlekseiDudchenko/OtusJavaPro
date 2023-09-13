@@ -6,10 +6,10 @@ import otus.study.cashmachine.bank.service.IAccountService;
 
 import java.math.BigDecimal;
 
-public class AccountServiceImpl implements IAccountService {
+public class AccountService implements IAccountService {
     AccountDao accountDao;
 
-    public AccountServiceImpl(final AccountDao accountDao) {
+    public AccountService(final AccountDao accountDao) {
         this.accountDao = accountDao;
     }
 

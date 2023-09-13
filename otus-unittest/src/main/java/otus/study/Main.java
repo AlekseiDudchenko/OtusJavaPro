@@ -4,14 +4,14 @@ import otus.study.cashmachine.bank.dao.AccountDao;
 import otus.study.cashmachine.bank.dao.CardsDao;
 import otus.study.cashmachine.bank.service.IAccountService;
 import otus.study.cashmachine.bank.service.ICardService;
-import otus.study.cashmachine.bank.service.impl.AccountServiceImpl;
-import otus.study.cashmachine.bank.service.impl.CardServiceImpl;
+import otus.study.cashmachine.bank.service.impl.AccountService;
+import otus.study.cashmachine.bank.service.impl.CardService;
 import otus.study.cashmachine.machine.data.CashMachine;
 import otus.study.cashmachine.machine.data.MoneyBox;
 import otus.study.cashmachine.machine.service.ICashMachineService;
 import otus.study.cashmachine.machine.service.IMoneyBoxService;
-import otus.study.cashmachine.machine.service.impl.CashMachineServiceImpl;
-import otus.study.cashmachine.machine.service.impl.MoneyBoxServiceImpl;
+import otus.study.cashmachine.machine.service.impl.CashMachineService;
+import otus.study.cashmachine.machine.service.impl.MoneyBoxService;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -29,11 +29,11 @@ public class Main {
 
 
     static {
-        accountService = new AccountServiceImpl(accountDao);
+        accountService = new AccountService(accountDao);
         cardsDao = new CardsDao();
-        cardService = new CardServiceImpl(accountService, cardsDao);
-        moneyBoxService = new MoneyBoxServiceImpl();
-        cashMachineService = new CashMachineServiceImpl(cardService, accountService, moneyBoxService);
+        cardService = new CardService(accountService, cardsDao);
+        moneyBoxService = new MoneyBoxService();
+        cashMachineService = new CashMachineService(cardService, accountService, moneyBoxService);
     }
 
     public static void main(String[] args) {

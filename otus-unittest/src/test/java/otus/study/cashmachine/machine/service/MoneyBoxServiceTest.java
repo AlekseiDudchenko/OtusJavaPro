@@ -3,7 +3,7 @@ package otus.study.cashmachine.machine.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import otus.study.cashmachine.machine.data.MoneyBox;
-import otus.study.cashmachine.machine.service.impl.MoneyBoxServiceImpl;
+import otus.study.cashmachine.machine.service.impl.MoneyBoxService;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class MoneyBoxServiceTest {
 
     @BeforeEach
     void init() {
-        moneyBoxService = new MoneyBoxServiceImpl();
+        moneyBoxService = new MoneyBoxService();
         moneyBox = new MoneyBox(100, 100, 100, 100);
     }
 
