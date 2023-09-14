@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Box<T extends Fruit> {
 
-    private ArrayList<T> fruits;
+    private List<T> fruits;
 
-    public Box(ArrayList<T> fruits) {
+    public Box(List<T> fruits) {
         this.fruits = fruits;
     }
 
@@ -26,7 +26,12 @@ public class Box<T extends Fruit> {
     }
 
     public boolean compare(Box<T> b2) {
-        return this.getWeight() == b2.getWeight();
+        if (b2 == null) {
+            return false;
+        }
+
+        double epsilon = 0.0001;
+        return Math.abs(this.getWeight() - b2.getWeight()) < epsilon;
     }
 
     public void addFruit(T fruit) {
@@ -34,7 +39,7 @@ public class Box<T extends Fruit> {
     }
 
     public void transferTo(Box<T> anotherBox) {
-        if (this.equals(anotherBox)) {
+        if (anotherBox == null || this == anotherBox) {
             return;
         }
 
@@ -42,7 +47,7 @@ public class Box<T extends Fruit> {
         this.fruits.clear();
     }
 
-    public ArrayList<T> getFruits() {
+    public List<T> getFruits() {
         return fruits;
     }
 
