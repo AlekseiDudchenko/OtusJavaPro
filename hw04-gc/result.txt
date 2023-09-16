@@ -1,0 +1,49 @@
+
+256Mb
+OutOfMemoryError: Java heap space
+OutOfMemoryError: Java heap space
+---
+OutOfMemoryError: Java heap space
+OutOfMemoryError: Java heap space
+
+512Mb
+spend msec:9385, sec:9
+spend msec:9531, sec:9
+---
+spend msec:2163, sec:2
+spend msec:2189, sec:2
+
+1Gb
+spend msec:8737, sec:8
+spend msec:8403, sec:8
+---
+spend msec:1607, sec:1
+spend msec:1565, sec:1
+
+2Gb
+spend msec:8600, sec:8
+spend msec:8632, sec:8
+---
+spend msec:1588, sec:1
+spend msec:1631, sec:1
+
+3Gb
+spend msec:7693, sec:7
+spend msec:7857, sec:7
+---
+spend msec:1821, sec:1
+spend msec:1861, sec:1
+
+4Gb
+spend msec:7930, sec:7
+spend msec:7755, sec:7
+---
+spend msec:1617, sec:1
+spend msec:1726, sec:1
+
+8Gb
+spend msec:8670, sec:8
+spend msec:8630, sec:8
+---
+spend msec:1537, sec:1
+spend msec:1524, sec:1
