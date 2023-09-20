@@ -24,6 +24,12 @@ public class AnnotationTest {
     @Test
     void secondTest() {
         System.out.println("I'm test N2");
+        throw new NullPointerException();
+    }
+
+    @Test
+    void anotherTest() {
+        System.out.println("I'm test N3");
     }
 
 

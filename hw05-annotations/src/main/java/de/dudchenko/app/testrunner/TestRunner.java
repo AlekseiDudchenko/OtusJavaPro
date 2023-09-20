@@ -1,4 +1,4 @@
-package de.dudchenko.annotations.app;
+package de.dudchenko.app.testrunner;
 
 import de.dudchenko.annotations.AfterEach;
 import de.dudchenko.annotations.BeforeEach;
@@ -15,15 +15,17 @@ public class TestRunner {
     private Method afterMethod = null;
     private final List<Method> testMethods = new ArrayList<>();
 
-    public void run(Class<?> clazzToTest) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        Object testInstance = clazzToTest.getDeclaredConstructor().newInstance();
+//    private TestRunner testRunner = new TestRunner();
 
-        sortMethodsOf(testInstance);
-        runTestsOf(testInstance);
+    public void run(Class<?> clazzToTest) throws Exception {
+        sortMethodsOf(clazzToTest);
+        runTestsOf(clazzToTest);
     }
 
-    private void sortMethodsOf(Object testInstance) {
-        for (Method method : testInstance.getClass().getDeclaredMethods()) {
+    private void sortMethodsOf(Class<?> clazzToTest) {
+        resetMethods();
+
+        for (Method method : clazzToTest.getDeclaredMethods()) {
             if (method.isAnnotationPresent(BeforeEach.class)) {
                 beforMethod = method;
             } else if (method.isAnnotationPresent(AfterEach.class)) {
@@ -34,11 +36,18 @@ public class TestRunner {
         }
     }
 
-    private void runTestsOf(Object testInstance) throws IllegalAccessException, InvocationTargetException {
+    private void runTestsOf(Class<?> clazzToTest) throws Exception {
         for (Method testMethod : testMethods) {
-            callMethodOn(beforMethod, testInstance);
-            callMethodOn(testMethod, testInstance);
-            callMethodOn(afterMethod, testInstance);
+            Object testInstance = clazzToTest.getDeclaredConstructor().newInstance();
+
+            try {
+                callMethodOn(beforMethod, testInstance);
+                callMethodOn(testMethod, testInstance);
+                callMethodOn(afterMethod, testInstance);
+                System.out.println(testMethod.getName() + " passed");
+            } catch (Exception ex) {
+                System.out.println(testMethod.getName() + " failed");
+            }
         }
     }
 
@@ -54,5 +63,11 @@ public class TestRunner {
             method.invoke(instance);
             method.setAccessible(false);
         }
+    }
+
+    private void resetMethods() {
+        beforMethod = null;
+        afterMethod = null;
+        testMethods.clear();
     }
 }

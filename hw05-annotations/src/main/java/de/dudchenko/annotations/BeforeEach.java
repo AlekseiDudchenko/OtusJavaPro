@@ -9,4 +9,5 @@ import java.lang.reflect.Method;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface BeforeEach {
+    // TODO: 20.09.2023 only one annotation per class
 }
