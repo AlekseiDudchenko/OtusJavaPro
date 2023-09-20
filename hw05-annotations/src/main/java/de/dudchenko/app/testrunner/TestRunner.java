@@ -11,18 +11,24 @@ import java.util.List;
 
 public class TestRunner {
 
+    private final Class<?> clazzToTest;
     private Method beforMethod = null;
     private Method afterMethod = null;
     private final List<Method> testMethods = new ArrayList<>();
+    private final Statistics statistics;
 
-//    private TestRunner testRunner = new TestRunner();
-
-    public void run(Class<?> clazzToTest) throws Exception {
-        sortMethodsOf(clazzToTest);
-        runTestsOf(clazzToTest);
+    public TestRunner(Class<?> clazzToTest) {
+        this.clazzToTest = clazzToTest;
+        statistics = new Statistics();
     }
 
-    private void sortMethodsOf(Class<?> clazzToTest) {
+    public void run() throws Exception {
+        sortMethods();
+        runTests();
+        statistics.printSummery();
+    }
+
+    private void sortMethods() {
         resetMethods();
 
         for (Method method : clazzToTest.getDeclaredMethods()) {
@@ -32,11 +38,12 @@ public class TestRunner {
                 afterMethod = method;
             } else if (method.isAnnotationPresent(Test.class)) {
                 testMethods.add(method);
+                statistics.addFound();
             }
         }
     }
 
-    private void runTestsOf(Class<?> clazzToTest) throws Exception {
+    private void runTests() throws Exception {
         for (Method testMethod : testMethods) {
             Object testInstance = clazzToTest.getDeclaredConstructor().newInstance();
 
@@ -44,9 +51,9 @@ public class TestRunner {
                 callMethodOn(beforMethod, testInstance);
                 callMethodOn(testMethod, testInstance);
                 callMethodOn(afterMethod, testInstance);
-                System.out.println(testMethod.getName() + " passed");
+                statistics.addPassed(testMethod.getName());
             } catch (Exception ex) {
-                System.out.println(testMethod.getName() + " failed");
+                statistics.addFailed(testMethod.getName());
             }
         }
     }

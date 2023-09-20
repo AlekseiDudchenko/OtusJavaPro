@@ -32,5 +32,11 @@ public class AnnotationTest {
         System.out.println("I'm test N3");
     }
 
+    @Test
+    void oneMoreTest() {
+        System.out.println("I'm one more");
+        throw new RuntimeException("Something went wrong");
+    }
+
 
 }

@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.projectlombok:lombok:1.18.30")
 }
 
 tasks.test {

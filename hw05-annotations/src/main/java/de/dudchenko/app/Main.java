@@ -5,8 +5,8 @@ import test.AnnotationTest;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        TestRunner testRunner = new TestRunner();
+        TestRunner testRunner = new TestRunner(AnnotationTest.class);
 
-        testRunner.run(AnnotationTest.class);
+        testRunner.run();
     }
 }
