@@ -3,7 +3,6 @@ package de.dudchenko.annotations.app;
 import de.dudchenko.annotations.AfterEach;
 import de.dudchenko.annotations.BeforeEach;
 import de.dudchenko.annotations.Test;
-import test.AnnotationTest;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,15 +11,19 @@ import java.util.List;
 
 public class TestRunner {
 
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = AnnotationTest.class;
-        Object testInstance = clazz.getDeclaredConstructor().newInstance();
+    private Method beforMethod = null;
+    private Method afterMethod = null;
+    private final List<Method> testMethods = new ArrayList<>();
 
-        Method beforMethod = null;
-        Method afterMethod = null;
-        List<Method> testMethods = new ArrayList<>();
+    public void run(Class<?> clazzToTest) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+        Object testInstance = clazzToTest.getDeclaredConstructor().newInstance();
 
-        for (Method method : clazz.getDeclaredMethods()) {
+        sortMethodsOf(testInstance);
+        runTestsOf(testInstance);
+    }
+
+    private void sortMethodsOf(Object testInstance) {
+        for (Method method : testInstance.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(BeforeEach.class)) {
                 beforMethod = method;
             } else if (method.isAnnotationPresent(AfterEach.class)) {
@@ -29,7 +32,9 @@ public class TestRunner {
                 testMethods.add(method);
             }
         }
+    }
 
+    private void runTestsOf(Object testInstance) throws IllegalAccessException, InvocationTargetException {
         for (Method testMethod : testMethods) {
             callMethodOn(beforMethod, testInstance);
             callMethodOn(testMethod, testInstance);
@@ -50,5 +55,4 @@ public class TestRunner {
             method.setAccessible(false);
         }
     }
-
 }

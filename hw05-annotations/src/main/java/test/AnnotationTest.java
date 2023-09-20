@@ -23,7 +23,7 @@ public class AnnotationTest {
 
     @Test
     void secondTest() {
-        System.out.println("I'm test N22");
+        System.out.println("I'm test N2");
     }
 
 
