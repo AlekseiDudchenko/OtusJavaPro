@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "org.example"
+group = "de.dudchenko"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -10,10 +10,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
-
-tasks.test {
-    useJUnitPlatform()
+    compileOnly ("org.projectlombok:lombok:1.18.30")
+    annotationProcessor ("org.projectlombok:lombok:1.18.30")
+    implementation("org.projectlombok:lombok:1.18.30")
+    implementation("com.google.auto.service:auto-service:1.1.1")
 }
